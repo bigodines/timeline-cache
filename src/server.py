@@ -53,9 +53,11 @@ class TimelineFactory(Factory):
 		self.storage_engine = storage
 		
 
-## TODO: add this class to the test suite
-class TimelineItem(Object):
-	def __init__(self):
-		# NOTE: item author is the 'key' in the storage engine.
-		self.id = ""
+
+class TimelineItem():
+	def __init__(self, myid="", author=""):
+		self.id = myid
+		self.author = author
 		self.timestamp = time.time()
+
+
