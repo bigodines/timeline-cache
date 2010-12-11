@@ -1,6 +1,0 @@
-2010-12-10 23:45:35-0200 [-] Log opened.
-2010-12-10 23:45:35-0200 [-] --> test_protocol.TestTimelineProtocol.test_get <--
-2010-12-10 23:45:35-0200 [-] --> test_protocol.TestTimelineProtocol.test_get_timeline <--
-2010-12-10 23:45:35-0200 [-] --> test_protocol.TestTimelineProtocol.test_has_storage_when_connectionMade_happypath <--
-2010-12-10 23:45:35-0200 [-] --> test_protocol.TestTimelineProtocol.test_parse <--
-2010-12-10 23:45:35-0200 [-] --> test_protocol.TestTimelineProtocol.test_push <--
