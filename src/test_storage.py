@@ -33,6 +33,7 @@ class RedisStorageTest(unittest.TestCase):
 		two = { 'key': 'itemId2', 'value': 'baz' }
 		self.storage.push('my_items',two)
 		resp = self.storage.get('my_items')
+		# TODO: assert
 
 	def test_list_cant_get_too_big(self):
 		for x in range(20):
@@ -42,18 +43,38 @@ class RedisStorageTest(unittest.TestCase):
 		self.assertEquals(10, len(resp))
 
 	def test_multi_get(self):
-		v1 = (123, 456)
-		v2 = (444, 333)
-		v3 = (555, 111)
+		v1 = {'meta':123, 'data':456}
+		v2 = {'meta':444, 'data':333}
+		v3 = {'meta':555, 'data':111}
 		self.storage.push('a', v1)
 		self.storage.push('b', v2)
 		self.storage.push('a', v3)
 
 		res = self.storage.multi_get(['a','b'])
 		self.assertEquals(3, len(res))
-	
-		
-		
+
+	def test_multi_get_returns_sorted_list(self):
+		v1 = {'meta':123, 'data':456}
+		v2 = {'meta':444, 'data':333}
+		v3 = {'meta':555, 'data':111}
+		v4 = {'meta':999, 'data': 'whatever'}
+		v5 = {'meta':856, 'data': 'foooo'}
+		v6 = {'meta':777, 'data': 123456 }
+		v7 = {'meta':12, 'data': 'im_not_gonna_return'}
+		self.storage.push('user_a', v1)
+		self.storage.push('user_b', v2)
+		self.storage.push('user_a', v3)
+		self.storage.push('user_a', v4)
+		self.storage.push('user_b', v5)
+		self.storage.push('user_b', v6)
+		self.storage.push('user_XX', v7)
+
+		res = self.storage.multi_get(['user_b','user_a'])
+#		print res
+		self.assertEquals(6, len(res))
+		self.assertEquals(999, res[0]['meta'])
+		self.assertEquals(856, res[1]['meta'])
+		self.assertEquals(123, res[5]['meta'])
 
 if __name__ == "__main__":
 	unittest.main()

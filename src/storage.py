@@ -11,7 +11,7 @@ class RedisStorage():
 	def push(self, key, obj):
 		obj = json.dumps(obj)
 		pos = self.storage.lpush(key, obj)
-		# cant let this list get too big
+		# cant let this list get too long
 		self.storage.ltrim(key, 0, self.LIST_SIZE) 
 		return pos
 	
@@ -25,8 +25,16 @@ class RedisStorage():
 		for k in keys:
 			pipe.lrange(k, 0, self.LIST_SIZE)
 
-		serialized = pipe.execute()
-		return serialized #[json.loads(x) for x in serialized]
+		raw_result = pipe.execute()
+		ret = []
+		
+		for sublist in raw_result:
+			converted_to_python = [json.loads(x) for x in sublist]
+			# IMPROV: sort while adding to the main list
+			[ret.append(x) for x in converted_to_python]
+
+		ret.sort(lambda y,x: cmp(x['meta'], y['meta']))
+		return ret 
 		
 
 
